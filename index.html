@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Washino Pro</title>
+<title>Washino</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
 
@@ -19,17 +19,17 @@ font-family:'Vazirmatn';
 body{
 background:linear-gradient(135deg,#0f172a,#111827);
 min-height:100vh;
-padding:20px;
 display:flex;
 justify-content:center;
+padding:20px;
 }
 
-.page{
+.container{
 width:100%;
-max-width:550px;
+max-width:520px;
 display:flex;
 flex-direction:column;
-gap:20px;
+gap:15px;
 }
 
 .card{
@@ -40,28 +40,20 @@ padding:25px;
 box-shadow:0 20px 50px rgba(0,0,0,.4);
 }
 
-.logo{
+h1{
+color:white;
 text-align:center;
-margin-bottom:20px;
+font-size:40px;
 }
 
-.logo h1{
-color:#fff;
-font-size:42px;
-}
-
-.logo span{
+h1 span{
 color:#38bdf8;
-}
-
-.group{
-margin-bottom:12px;
 }
 
 label{
 display:block;
-font-size:13px;
 color:#cbd5e1;
+font-size:13px;
 margin-bottom:6px;
 }
 
@@ -73,18 +65,7 @@ border:none;
 background:#0b1220;
 color:white;
 outline:none;
-}
-
-.phone{
-display:flex;
-gap:8px;
-}
-
-.prefix{
-background:#0b1220;
-padding:12px;
-border-radius:12px;
-color:#38bdf8;
+margin-bottom:10px;
 }
 
 button{
@@ -94,76 +75,68 @@ border:none;
 border-radius:14px;
 background:linear-gradient(135deg,#0ea5e9,#2563eb);
 color:white;
-font-size:16px;
 font-weight:bold;
 cursor:pointer;
 }
 
-.loader{
-display:none;
-text-align:center;
-color:#38bdf8;
-margin-top:10px;
-}
-
-.success{
-display:none;
-margin-top:10px;
-background:#16a34a;
-padding:12px;
-border-radius:12px;
-text-align:center;
-}
-
 .footer{
 background:#0b1220;
-border:1px solid rgba(255,255,255,.08);
-border-radius:20px;
 padding:20px;
+border-radius:20px;
 text-align:center;
 color:#94a3b8;
 }
 
-.footer h3{
-color:#38bdf8;
-margin-bottom:10px;
-}
-
 .footer a{
-color:#cbd5e1;
+color:#38bdf8;
 text-decoration:none;
 display:block;
 margin-top:5px;
 }
+
+.toast{
+position:fixed;
+bottom:20px;
+right:20px;
+left:20px;
+margin:auto;
+max-width:420px;
+background:#111827;
+color:white;
+padding:14px;
+border-radius:12px;
+text-align:center;
+opacity:0;
+transform:translateY(20px);
+transition:0.4s;
+}
+
+.toast.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.toast.success{border-right:4px solid #22c55e;}
+.toast.error{border-right:4px solid #ef4444;}
+.toast.loading{border-right:4px solid #3b82f6;}
 
 </style>
 </head>
 
 <body>
 
-<div class="page">
+<div class="container">
 
 <div class="card">
 
-<div class="logo">
 <h1>Wash<span>ino</span></h1>
-<p>کارواش سیار حرفه‌ای</p>
-</div>
 
-<div class="group">
 <label>نام</label>
 <input id="name">
-</div>
 
-<div class="group">
 <label>شماره تماس</label>
-<div class="phone">
-<div class="prefix">+98</div>
 <input id="phone">
-</div>
-</div>
 
-<div class="group">
 <label>نوع خودرو</label>
 <select id="car">
 <option>سواری</option>
@@ -171,14 +144,10 @@ margin-top:5px;
 <option>وانت</option>
 <option>سنگین</option>
 </select>
-</div>
 
-<div class="group">
 <label>مارک خودرو</label>
 <input id="brand">
-</div>
 
-<div class="group">
 <label>سرویس</label>
 <select id="service">
 <option>معمولی</option>
@@ -186,69 +155,70 @@ margin-top:5px;
 <option>پولیش</option>
 <option>صفرشویی</option>
 </select>
-</div>
 
-<div class="group">
 <label>تاریخ</label>
 <input id="date">
-</div>
 
-<div class="group">
 <label>ساعت</label>
 <input type="time" id="time">
-</div>
+
+<label>آدرس دستی</label>
+<input id="address">
 
 <button onclick="sendOrder()">ثبت سفارش</button>
-
-<div class="loader" id="loader">📍 در حال دریافت موقعیت...</div>
-<div class="success" id="success">✅ سفارش ثبت شد</div>
 
 </div>
 
 <div class="footer">
-
 <h3>Washino</h3>
 <p>کارواش سیار در محل شما 🚗</p>
-
 <a href="tel:+989121234567">📞 تماس</a>
 <a href="mailto:aliamjadian.3330@gmail.com">📧 ایمیل</a>
-
 </div>
 
 </div>
+
+<div id="toast" class="toast"></div>
 
 <script>
 
-const scriptURL =
-"https://script.google.com/macros/s/AKfycbxPS3DiK_h_Zc1wN9ovgp-nzCAiw4n0YBI7MNsC_p5EDDPgL89TgpOOtOQq4R-2wth7/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxPS3DiK_h_Zc1wN9ovgp-nzCAiw4n0YBI7MNsC_p5EDDPgL89TgpOOtOQq4R-2wth7/exec";
+
+function showToast(msg,type="success"){
+const t=document.getElementById("toast");
+t.innerText=msg;
+t.className="toast show "+type;
+setTimeout(()=>t.className="toast",3000);
+}
 
 function sendOrder(){
 
+showToast("📍 دریافت موقعیت...", "loading");
+
 if(!navigator.geolocation){
-alert("GPS فعال نیست");
+showToast("❌ GPS فعال نیست","error");
 return;
 }
 
-document.getElementById("loader").style.display="block";
+navigator.geolocation.getCurrentPosition(async (pos)=>{
 
-navigator.geolocation.getCurrentPosition(async function(pos){
+const lat=pos.coords.latitude;
+const lng=pos.coords.longitude;
 
-const lat = pos.coords.latitude;
-const lng = pos.coords.longitude;
+const location=`https://www.google.com/maps?q=${lat},${lng}`;
 
-const locationLink = `https://www.google.com/maps?q=${lat},${lng}`;
-
-const data = {
+const data={
 name:document.getElementById("name").value,
-phone:"+98"+document.getElementById("phone").value,
+phone:document.getElementById("phone").value,
 car:document.getElementById("car").value,
 brand:document.getElementById("brand").value,
 service:document.getElementById("service").value,
 date:document.getElementById("date").value,
 time:document.getElementById("time").value,
+address:document.getElementById("address").value,
 latitude:lat,
 longitude:lng,
-location:locationLink
+location:location
 };
 
 await fetch(scriptURL,{
@@ -257,13 +227,10 @@ mode:"no-cors",
 body:JSON.stringify(data)
 });
 
-document.getElementById("loader").style.display="none";
-document.getElementById("success").style.display="block";
+showToast("🚗 سفارش شما ثبت شد", "success");
 
-},function(){
-
-alert("برای ثبت سفارش باید موقعیت را فعال کنید");
-
+},()=>{
+showToast("📍 لطفاً موقعیت را فعال کنید","error");
 });
 
 }
