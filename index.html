@@ -2,10 +2,10 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Washino | واشینو</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Washino Pro</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -13,30 +13,36 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Vazirmatn',sans-serif;
+font-family:'Vazirmatn';
 }
 
 body{
 background:linear-gradient(135deg,#0f172a,#111827);
 min-height:100vh;
+padding:20px;
 display:flex;
 justify-content:center;
-align-items:center;
-padding:20px;
+}
+
+.page{
+width:100%;
+max-width:550px;
+display:flex;
+flex-direction:column;
+gap:20px;
 }
 
 .card{
-width:100%;
-max-width:550px;
 background:#111827;
-border-radius:24px;
+border:1px solid rgba(255,255,255,.08);
+border-radius:20px;
 padding:25px;
-box-shadow:0 20px 50px rgba(0,0,0,.5);
+box-shadow:0 20px 50px rgba(0,0,0,.4);
 }
 
 .logo{
 text-align:center;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
 .logo h1{
@@ -48,24 +54,20 @@ font-size:42px;
 color:#38bdf8;
 }
 
-.logo p{
-color:#94a3b8;
-}
-
 .group{
-margin-bottom:15px;
+margin-bottom:12px;
 }
 
 label{
 display:block;
-margin-bottom:6px;
-color:#cbd5e1;
 font-size:13px;
+color:#cbd5e1;
+margin-bottom:6px;
 }
 
 input,select{
 width:100%;
-padding:13px;
+padding:12px;
 border-radius:12px;
 border:none;
 background:#0b1220;
@@ -80,13 +82,9 @@ gap:8px;
 
 .prefix{
 background:#0b1220;
-padding:13px;
+padding:12px;
 border-radius:12px;
-color:white;
-}
-
-.phone input{
-flex:1;
+color:#38bdf8;
 }
 
 button{
@@ -101,21 +99,41 @@ font-weight:bold;
 cursor:pointer;
 }
 
-.success{
-display:none;
-margin-top:15px;
-background:#16a34a;
-padding:14px;
-border-radius:12px;
-text-align:center;
-color:white;
-}
-
 .loader{
 display:none;
 text-align:center;
-margin-top:15px;
 color:#38bdf8;
+margin-top:10px;
+}
+
+.success{
+display:none;
+margin-top:10px;
+background:#16a34a;
+padding:12px;
+border-radius:12px;
+text-align:center;
+}
+
+.footer{
+background:#0b1220;
+border:1px solid rgba(255,255,255,.08);
+border-radius:20px;
+padding:20px;
+text-align:center;
+color:#94a3b8;
+}
+
+.footer h3{
+color:#38bdf8;
+margin-bottom:10px;
+}
+
+.footer a{
+color:#cbd5e1;
+text-decoration:none;
+display:block;
+margin-top:5px;
 }
 
 </style>
@@ -123,15 +141,17 @@ color:#38bdf8;
 
 <body>
 
+<div class="page">
+
 <div class="card">
 
 <div class="logo">
 <h1>Wash<span>ino</span></h1>
-<p>رزرو آنلاین کارواش</p>
+<p>کارواش سیار حرفه‌ای</p>
 </div>
 
 <div class="group">
-<label>نام و نام خانوادگی</label>
+<label>نام</label>
 <input id="name">
 </div>
 
@@ -139,7 +159,7 @@ color:#38bdf8;
 <label>شماره تماس</label>
 <div class="phone">
 <div class="prefix">+98</div>
-<input id="phone" placeholder="9121234567">
+<input id="phone">
 </div>
 </div>
 
@@ -155,23 +175,22 @@ color:#38bdf8;
 
 <div class="group">
 <label>مارک خودرو</label>
-<input id="brand" placeholder="مثال: پژو 207">
+<input id="brand">
 </div>
 
 <div class="group">
-<label>نوع سرویس</label>
+<label>سرویس</label>
 <select id="service">
-<option>شستشوی معمولی</option>
+<option>معمولی</option>
 <option>VIP</option>
-<option>موتورشویی</option>
-<option>صفرشویی</option>
 <option>پولیش</option>
+<option>صفرشویی</option>
 </select>
 </div>
 
 <div class="group">
 <label>تاریخ</label>
-<input id="date" placeholder="1405/04/01">
+<input id="date">
 </div>
 
 <div class="group">
@@ -181,12 +200,19 @@ color:#38bdf8;
 
 <button onclick="sendOrder()">ثبت سفارش</button>
 
-<div class="loader" id="loader">
-در حال دریافت موقعیت مکانی...
+<div class="loader" id="loader">📍 در حال دریافت موقعیت...</div>
+<div class="success" id="success">✅ سفارش ثبت شد</div>
+
 </div>
 
-<div class="success" id="success">
-✅ سفارش شما با موفقیت ثبت شد
+<div class="footer">
+
+<h3>Washino</h3>
+<p>کارواش سیار در محل شما 🚗</p>
+
+<a href="tel:+989121234567">📞 تماس</a>
+<a href="mailto:aliamjadian.3330@gmail.com">📧 ایمیل</a>
+
 </div>
 
 </div>
@@ -198,76 +224,47 @@ const scriptURL =
 
 function sendOrder(){
 
-const name=document.getElementById("name").value;
-const phone=document.getElementById("phone").value;
-const brand=document.getElementById("brand").value;
-const date=document.getElementById("date").value;
-const time=document.getElementById("time").value;
-
-if(!name || !phone || !brand || !date || !time){
-alert("لطفاً همه فیلدها را تکمیل کنید");
+if(!navigator.geolocation){
+alert("GPS فعال نیست");
 return;
 }
 
 document.getElementById("loader").style.display="block";
 
-navigator.geolocation.getCurrentPosition(
+navigator.geolocation.getCurrentPosition(async function(pos){
 
-function(position){
+const lat = pos.coords.latitude;
+const lng = pos.coords.longitude;
 
-const data={
+const locationLink = `https://www.google.com/maps?q=${lat},${lng}`;
 
-name:name,
-
-phone:"+98"+phone,
-
+const data = {
+name:document.getElementById("name").value,
+phone:"+98"+document.getElementById("phone").value,
 car:document.getElementById("car").value,
-
-brand:brand,
-
+brand:document.getElementById("brand").value,
 service:document.getElementById("service").value,
-
-date:date,
-
-time:time,
-
-latitude:position.coords.latitude,
-
-longitude:position.coords.longitude,
-
-location:`https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`
-
+date:document.getElementById("date").value,
+time:document.getElementById("time").value,
+latitude:lat,
+longitude:lng,
+location:locationLink
 };
 
-fetch(scriptURL,{
+await fetch(scriptURL,{
 method:"POST",
 mode:"no-cors",
 body:JSON.stringify(data)
-})
-.then(()=>{
+});
 
 document.getElementById("loader").style.display="none";
 document.getElementById("success").style.display="block";
 
-})
-.catch(()=>{
+},function(){
 
-document.getElementById("loader").style.display="none";
-alert("خطا در ارسال اطلاعات");
+alert("برای ثبت سفارش باید موقعیت را فعال کنید");
 
 });
-
-},
-
-function(){
-
-document.getElementById("loader").style.display="none";
-
-alert("برای ثبت سفارش باید دسترسی موقعیت مکانی را فعال کنید.");
-
-}
-
-);
 
 }
 
