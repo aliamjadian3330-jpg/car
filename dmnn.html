@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Washino | واشینو</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Vazirmatn',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#111827);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.card{
+width:100%;
+max-width:550px;
+background:#111827;
+border-radius:24px;
+padding:25px;
+box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+
+.logo{
+text-align:center;
+margin-bottom:25px;
+}
+
+.logo h1{
+color:#fff;
+font-size:42px;
+}
+
+.logo span{
+color:#38bdf8;
+}
+
+.logo p{
+color:#94a3b8;
+}
+
+.group{
+margin-bottom:15px;
+}
+
+label{
+display:block;
+margin-bottom:6px;
+color:#cbd5e1;
+font-size:13px;
+}
+
+input,select{
+width:100%;
+padding:13px;
+border-radius:12px;
+border:none;
+background:#0b1220;
+color:white;
+outline:none;
+}
+
+.phone{
+display:flex;
+gap:8px;
+}
+
+.prefix{
+background:#0b1220;
+padding:13px;
+border-radius:12px;
+color:white;
+}
+
+.phone input{
+flex:1;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#0ea5e9,#2563eb);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.success{
+display:none;
+margin-top:15px;
+background:#16a34a;
+padding:14px;
+border-radius:12px;
+text-align:center;
+color:white;
+}
+
+.loader{
+display:none;
+text-align:center;
+margin-top:15px;
+color:#38bdf8;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="logo">
+<h1>Wash<span>ino</span></h1>
+<p>رزرو آنلاین کارواش</p>
+</div>
+
+<div class="group">
+<label>نام و نام خانوادگی</label>
+<input id="name">
+</div>
+
+<div class="group">
+<label>شماره تماس</label>
+<div class="phone">
+<div class="prefix">+98</div>
+<input id="phone" placeholder="9121234567">
+</div>
+</div>
+
+<div class="group">
+<label>نوع خودرو</label>
+<select id="car">
+<option>سواری</option>
+<option>شاسی بلند</option>
+<option>وانت</option>
+<option>سنگین</option>
+</select>
+</div>
+
+<div class="group">
+<label>مارک خودرو</label>
+<input id="brand" placeholder="مثال: پژو 207">
+</div>
+
+<div class="group">
+<label>نوع سرویس</label>
+<select id="service">
+<option>شستشوی معمولی</option>
+<option>VIP</option>
+<option>موتورشویی</option>
+<option>صفرشویی</option>
+<option>پولیش</option>
+</select>
+</div>
+
+<div class="group">
+<label>تاریخ</label>
+<input id="date" placeholder="1405/04/01">
+</div>
+
+<div class="group">
+<label>ساعت</label>
+<input type="time" id="time">
+</div>
+
+<button onclick="sendOrder()">ثبت سفارش</button>
+
+<div class="loader" id="loader">
+در حال دریافت موقعیت مکانی...
+</div>
+
+<div class="success" id="success">
+✅ سفارش شما با موفقیت ثبت شد
+</div>
+
+</div>
+
+<script>
+
+const scriptURL =
+"https://script.google.com/macros/s/AKfycbxPS3DiK_h_Zc1wN9ovgp-nzCAiw4n0YBI7MNsC_p5EDDPgL89TgpOOtOQq4R-2wth7/exec";
+
+function sendOrder(){
+
+const name=document.getElementById("name").value;
+const phone=document.getElementById("phone").value;
+const brand=document.getElementById("brand").value;
+const date=document.getElementById("date").value;
+const time=document.getElementById("time").value;
+
+if(!name || !phone || !brand || !date || !time){
+alert("لطفاً همه فیلدها را تکمیل کنید");
+return;
+}
+
+document.getElementById("loader").style.display="block";
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+const data={
+
+name:name,
+
+phone:"+98"+phone,
+
+car:document.getElementById("car").value,
+
+brand:brand,
+
+service:document.getElementById("service").value,
+
+date:date,
+
+time:time,
+
+latitude:position.coords.latitude,
+
+longitude:position.coords.longitude,
+
+location:`https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`
+
+};
+
+fetch(scriptURL,{
+method:"POST",
+mode:"no-cors",
+body:JSON.stringify(data)
+})
+.then(()=>{
+
+document.getElementById("loader").style.display="none";
+document.getElementById("success").style.display="block";
+
+})
+.catch(()=>{
+
+document.getElementById("loader").style.display="none";
+alert("خطا در ارسال اطلاعات");
+
+});
+
+},
+
+function(){
+
+document.getElementById("loader").style.display="none";
+
+alert("برای ثبت سفارش باید دسترسی موقعیت مکانی را فعال کنید.");
+
+}
+
+);
+
+}
+
+</script>
+
+</body>
+</html>
